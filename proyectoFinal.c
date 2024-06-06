@@ -139,7 +139,7 @@ int main()
 
         if (colaOPila == 1)
         {
-            while (1)
+            while (colaOPila == 1)
             {
                 printf("\nUsando Pilas\n"
                        "\n1.- Agregar elemento a una Pila\n"
@@ -148,6 +148,7 @@ int main()
                        "\n4.- Imprimir tamaño\n"
                        "\n5.- Comprobar si está vacía\n"
                        "\n6.- Mostrar último elemento Pila\n"
+                       "\n7.- Regresar al menú principal\n"
                        "\n-1.- Salir\n\n"
                        "\tElige:\n\n");
                 scanf("%d", &eleccion);
@@ -187,6 +188,9 @@ int main()
                     printf("El último elemento es: %d\n", ultimo());
                     esperar();
                     break;
+                case 7:
+                    colaOPila = 0;
+                    break;
                 case -1:
                     limpiarPantalla();
                     salir = 1;
@@ -205,12 +209,13 @@ int main()
         }
         else if (colaOPila == 2)
         {
-            while (1)
+            while (colaOPila == 2)
             {
                 printf("\nUsando Colas\n"
                        "\n1.- Agregar elemento a una Cola\n"
                        "\n2.- Eliminar un elemento de una Cola\n"
                        "\n3.- Imprimir Cola\n"
+                       "\n4.- Regresar al menú principal\n"
                        "\n-1.- Salir\n\n"
                        "\tElige:\n\n");
                 scanf("%d", &eleccion);
@@ -246,6 +251,9 @@ int main()
                 case 3:
                     mostrarCola(&cola);
                     esperar();
+                    break;
+                case 4:
+                    colaOPila = 0;
                     break;
                 case -1:
                     limpiarPantalla();
