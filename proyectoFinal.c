@@ -90,13 +90,16 @@ void mostrarCola(Cola *q)
     printf("\n");
 }
 
-//** Prototipos de funciones para la pila
+//** TODO: Prototipos de funciones para la pila
 void agregar(int numero);  // push
 void eliminarUltimo(void); // pop
 void imprimir(void);
-int tamanio(void); // El tamaño de la pila
-bool vacia(void);  // Indica si la pila está vacía
-int ultimo(void);  // El último elemento. Devuelve -1 si no hay elementos
+int tamanio(void);                                    // El tamaño de la pila
+bool vacia(void);                                     // Indica si la pila está vacía
+int ultimo(void);                                     // El último elemento. Devuelve -1 si no hay elementos
+void addElement(int **array, int *size, int element); // añadir elemento al arrteglo
+void printArray(int *array, int size);                // Imprime el arreglo
+void deleteElement(int **array, int *size);
 
 void limpiarPantalla()
 {
@@ -109,7 +112,7 @@ void limpiarPantalla()
 
 void esperar()
 {
-    printf("Presiona Enter para continuar...");
+    printf("\nPresiona Enter para continuar...");
     getchar(); // Captura el Enter de la opción previa
     getchar(); // Captura el Enter para continuar
 }
@@ -130,11 +133,14 @@ int main()
     int numero = 0;
     int colaOPila;
     int salir = 0;
+    int *array = NULL;
+    int size = 0;
+
     inicializarCola(&cola);
 
     while (!salir)
     {
-        printf("\n--Bienvenido--\n**Elige**\n1.- Usar Pilas\n2.- Usar Colas\n-1.- Salir\n\n");
+        printf("\n--Bienvenido--\n**Elige**\n1.- Usar Pilas\n2.- Usar Colas\n3.-Usar Arreglo de numeros\n4.-Usar Arreglo de numeros\n -1.- Salir\n\n");
         scanf("%d", &colaOPila);
 
         if (colaOPila == 1)
@@ -271,6 +277,73 @@ int main()
                 limpiarPantalla();
             }
         }
+        else if (colaOPila == 3)
+        {
+            while (colaOPila == 3)
+            {
+                printf("\nUsando Arreglo de numeros\n"
+                       "\n1.- Agregar elemento al arreglo\n"
+                       "\n2.- Eliminar un elemento del arreglo\n"
+                       "\n3.- Imprimir arreglo\n"
+                       "\n4.- Regresar al menú principal\n"
+                       "\n-1.- Salir\n\n"
+                       "\tElige:\n\n");
+                scanf("%d", &eleccion);
+
+                switch (eleccion)
+                {
+                case 1:
+                    int newNumber;
+                    printf("Ingresa el número que agregaremos al arreglo:\n");
+                    scanf("%d", &newNumber);
+                    addElement(&array, &size, newNumber);
+                    colaOPila = 3;
+                    esperar();
+                    break;
+                case 2:
+                    printf("Eliminando elementos del arreglo...\n");
+                    while (size >= 0)
+                    {
+                        int respuesta;
+                        printf("\n\n-¿Deseas quitar elemento del arreglo? Si = 1 / No = 0 \n");
+                        scanf("%d", &respuesta);
+
+                        if (respuesta == 1)
+                        {
+                            deleteElement(&array, &size);
+                            printf("\n\nEliminando...\n");
+                            printArray(array, size);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    esperar();
+                    break;
+                case 3:
+                    printArray(array, size);
+                    esperar();
+                    break;
+                case 4:
+                    colaOPila = 0;
+                    break;
+                case -1:
+                    limpiarPantalla();
+                    salir = 1;
+                    break;
+                default:
+                    printf("Opción no válida\n");
+                    esperar();
+                    break;
+                }
+                if (salir)
+                {
+                    break;
+                }
+                limpiarPantalla();
+            }
+        }
         else if (colaOPila == -1)
         {
             limpiarPantalla();
@@ -357,4 +430,39 @@ void eliminarUltimo(void)
         // Liberar memoria que estaba ocupando el que eliminamos
         free(temporal);
     }
+}
+void addElement(int **array, int *size, int element)
+{
+    int *temp = realloc(*array, (*size + 1) * sizeof(int));
+    if (temp == NULL)
+    {
+        // Manejo de error
+        printf("Error al asignar memoria\n");
+        exit(1);
+    }
+    *array = temp;
+    (*array)[*size] = element;
+    (*size)++;
+}
+
+void printArray(int *array, int size)
+{
+    printf("\n\nTu arreglo es:\n");
+    for (int i = 0; i < size; i++)
+    {
+        printf("\n%d", array[i]);
+    }
+}
+
+void deleteElement(int **array, int *size)
+{
+    int *temp = realloc(*array, (*size - 1) * sizeof(int));
+    if (temp == NULL)
+    {
+        // Manejo de error
+        printf("Error al asignar memoria\n");
+        exit(1);
+    }
+    *array = temp;
+    (*size)--;
 }
