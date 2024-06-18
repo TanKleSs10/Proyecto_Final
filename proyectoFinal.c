@@ -140,7 +140,7 @@ int main()
 
     while (!salir)
     {
-        printf("\n--Bienvenido--\n**Elige**\n1.- Usar Pilas\n2.- Usar Colas\n3.-Usar Arreglo de numeros\n4.-Usar Arreglo de numeros\n -1.- Salir\n\n");
+        printf("\n--Bienvenido--\n**Elige**\n1.- Usar Pilas\n2.- Usar Colas\n3.-Usar Arreglo de numeros\n -1.- Salir\n\n");
         scanf("%d", &colaOPila);
 
         if (colaOPila == 1)
