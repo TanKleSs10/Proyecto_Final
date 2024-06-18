@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <locale.h>
-#include "include/pila.h"
-#include "include/utils.h"
 
 // Definición de la estructura para los nodos de la cola
 typedef struct Nodo
@@ -92,20 +90,44 @@ void mostrarCola(Cola *q)
     printf("\n");
 }
 
-void addElement(int **array, int *size, int element); // añadir elemento al arreglo
+//** TODO: Prototipos de funciones para la pila
+void agregar(int numero);  // push
+void eliminarUltimo(void); // pop
+void imprimir(void);
+int tamanio(void);                                    // El tamaño de la pila
+bool vacia(void);                                     // Indica si la pila está vacía
+int ultimo(void);                                     // El último elemento. Devuelve -1 si no hay elementos
+void addElement(int **array, int *size, int element); // añadir elemento al arrteglo
 void printArray(int *array, int size);                // Imprime el arreglo
 void deleteElement(int **array, int *size);
 
+void limpiarPantalla()
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+void esperar()
+{
+    printf("\nPresiona Enter para continuar...");
+    getchar(); // Captura el Enter de la opción previa
+    getchar(); // Captura el Enter para continuar
+}
+
 int main()
 {
-    // Cambiar codificación a UTF-8
+
+// Cambiar codificación a UTF-8
 #ifdef _WIN32
     system("chcp 65001");
 #endif
 
     setlocale(LC_ALL, "");
 
-    // Declaración de una cola
+    // ** Declaración de una cola
     Cola cola;
     int eleccion = 0;
     int numero = 0;
@@ -118,7 +140,7 @@ int main()
 
     while (!salir)
     {
-        printf("\n--Bienvenido--\n**Elige**\n1.- Usar Pilas\n2.- Usar Colas\n3.-Usar Arreglo de numeros\n4.-Usar Arreglo de numeros\n-1.- Salir\n\n");
+        printf("\n--Bienvenido--\n**Elige**\n1.- Usar Pilas\n2.- Usar Colas\n3.-Usar Arreglo de numeros\n4.-Usar Arreglo de numeros\n -1.- Salir\n\n");
         scanf("%d", &colaOPila);
 
         if (colaOPila == 1)
@@ -126,15 +148,15 @@ int main()
             while (colaOPila == 1)
             {
                 printf("\nUsando Pilas\n"
-                       "1.- Agregar elemento a una Pila\n"
-                       "2.- Eliminar un elemento de Pila\n"
-                       "3.- Imprimir Pila\n"
-                       "4.- Imprimir tamaño\n"
-                       "5.- Comprobar si está vacía\n"
-                       "6.- Mostrar último elemento Pila\n"
-                       "7.- Regresar al menú principal\n"
-                       "-1.- Salir\n\n"
-                       "Elige:\n\n");
+                       "\n1.- Agregar elemento a una Pila\n"
+                       "\n2.- Eliminar un elemento de Pila\n"
+                       "\n3.- Imprimir Pila\n"
+                       "\n4.- Imprimir tamaño\n"
+                       "\n5.- Comprobar si está vacía\n"
+                       "\n6.- Mostrar último elemento Pila\n"
+                       "\n7.- Regresar al menú principal\n"
+                       "\n-1.- Salir\n\n"
+                       "\tElige:\n\n");
                 scanf("%d", &eleccion);
 
                 switch (eleccion)
@@ -196,12 +218,12 @@ int main()
             while (colaOPila == 2)
             {
                 printf("\nUsando Colas\n"
-                       "1.- Agregar elemento a una Cola\n"
-                       "2.- Eliminar un elemento de una Cola\n"
-                       "3.- Imprimir Cola\n"
-                       "4.- Regresar al menú principal\n"
-                       "-1.- Salir\n\n"
-                       "Elige:\n\n");
+                       "\n1.- Agregar elemento a una Cola\n"
+                       "\n2.- Eliminar un elemento de una Cola\n"
+                       "\n3.- Imprimir Cola\n"
+                       "\n4.- Regresar al menú principal\n"
+                       "\n-1.- Salir\n\n"
+                       "\tElige:\n\n");
                 scanf("%d", &eleccion);
 
                 switch (eleccion)
@@ -260,20 +282,21 @@ int main()
             while (colaOPila == 3)
             {
                 printf("\nUsando Arreglo de numeros\n"
-                       "1.- Agregar elemento al arreglo\n"
-                       "2.- Eliminar un elemento del arreglo\n"
-                       "3.- Imprimir arreglo\n"
-                       "4.- Regresar al menú principal\n"
-                       "-1.- Salir\n\n"
-                       "Elige:\n\n");
+                       "\n1.- Agregar elemento al arreglo\n"
+                       "\n2.- Eliminar un elemento del arreglo\n"
+                       "\n3.- Imprimir arreglo\n"
+                       "\n4.- Regresar al menú principal\n"
+                       "\n-1.- Salir\n\n"
+                       "\tElige:\n\n");
                 scanf("%d", &eleccion);
 
                 switch (eleccion)
                 {
                 case 1:
+                    int newNumber;
                     printf("Ingresa el número que agregaremos al arreglo:\n");
-                    scanf("%d", &numero);
-                    addElement(&array, &size, numero);
+                    scanf("%d", &newNumber);
+                    addElement(&array, &size, newNumber);
                     colaOPila = 3;
                     esperar();
                     break;
@@ -337,6 +360,77 @@ int main()
     return 0;
 }
 
+// Todo comienza con el nodo superior
+struct Nodo *superior = NULL;
+
+int tamanio(void)
+{
+    int contador = 0;
+    if (superior == NULL)
+        return contador;
+    struct Nodo *temporal = superior;
+    while (temporal != NULL)
+    {
+        contador++;
+        temporal = temporal->siguiente;
+    }
+    return contador;
+}
+
+bool vacia(void)
+{
+    return superior == NULL;
+}
+
+int ultimo()
+{
+    if (superior == NULL)
+        return -1;
+    return superior->dato;
+}
+
+// Operación push
+void agregar(int numero)
+{
+    printf("Agregando %d\n", numero);
+    // El que se agregará; reservamos memoria
+    struct Nodo *nuevoNodo = malloc(sizeof(struct Nodo));
+    // Le ponemos el dato
+    nuevoNodo->dato = numero;
+    // Y ahora el nuevo nodo es el superior, y su siguiente
+    // es el que antes era superior
+    nuevoNodo->siguiente = superior;
+    superior = nuevoNodo;
+}
+
+void imprimir(void)
+{
+    printf("Imprimiendo...\n");
+    struct Nodo *temporal = superior;
+    while (temporal != NULL)
+    {
+        printf("%d\n", temporal->dato);
+        temporal = temporal->siguiente;
+    }
+}
+
+// Operación pop, eliminar el de hasta arriba
+void eliminarUltimo(void)
+{
+    printf("Eliminando el último\n");
+    if (superior != NULL)
+    {
+        // Para liberar la memoria más tarde debemos
+        // tener la referencia al que vamos a eliminar
+        struct Nodo *temporal = superior;
+        printf("\nDato eliminado: %d\n", temporal->dato);
+        // Ahora superior es a lo que apuntaba su siguiente
+        superior = superior->siguiente;
+
+        // Liberar memoria que estaba ocupando el que eliminamos
+        free(temporal);
+    }
+}
 void addElement(int **array, int *size, int element)
 {
     int *temp = realloc(*array, (*size + 1) * sizeof(int));
