@@ -29,6 +29,12 @@ El siguiente es un programa en C que implementa el uso de pilas y colas utilizan
 - `bool vacia()`: Verifica si la pila está vacía.
 - `int ultimo()`: Retorna el último elemento de la pila.
 
+### Para operar con Arreglos
+
+- `void addElement(int **array, int *size, int element)`: Agrega un elemento al array (push).
+- `void deleteElement(int **array, int *size)`: Elimina el último elemento del array (pop).
+- `void printArray(int *array, int size)`: Imprime los elementos del array.
+
 ### Funciones de Utilidad
 
 - `void limpiarPantalla()`: Limpia la pantalla de la consola.
@@ -42,3 +48,10 @@ El siguiente es un programa en C que implementa el uso de pilas y colas utilizan
 - Dependiendo de la elección del usuario, se ejecuta un submenú para operar con pilas o colas.
 - Cada submenú permite agregar, eliminar, imprimir y realizar otras operaciones en la estructura seleccionada.
 - El programa termina cuando el usuario elige la opción de salir (`-1`).
+
+
+# Para compilar se usa:
+- gcc main.c estructuras/estructuras.c pila/pila.c arreglo/arreglo.c char_array/char_array.c -o programa
+
+# Pra Ejecutar se usa:
+- ./programa
